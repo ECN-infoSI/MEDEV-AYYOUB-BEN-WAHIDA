@@ -135,5 +135,15 @@ public class Board {
         grid[x][y].setState(state);
         capturePions(x, y, state);
     }
-    
+    public int countPieces(char state){
+        int c =0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (grid[i][j].getState() == state){
+                    c+=1;
+                }
+            }
+        }
+        return c;
+    }
 }
