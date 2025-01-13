@@ -37,5 +37,15 @@ public class Board {
         grid[3][4].setState('N');
         grid[4][3].setState('N');
     }
-
+     // Affichage du plateau
+    public void display() {
+        System.out.println("  a b c d e f g h"); // En-tête des colonnes
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print((i + 1) + " "); // En-tête des lignes
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 }
