@@ -1,29 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package fr.centrale.medev.tp.note;
-
-/**
- *
- * @author Nadhem
- */
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe Board représente le plateau de jeu pour un jeu de type Othello.
+ * Elle gère l'initialisation du plateau, l'affichage, la validation des mouvements,
+ * ainsi que la capture des pions adverses.
+ * 
+ * @author Nadhem
+ */
 public class Board {
     final Cell[][] grid;
 
     // Dimensions du plateau
     private static final int SIZE = 8;
 
-    // Constructeur
+    /**
+     * Constructeur de la classe Board.
+     * Initialise le plateau avec des cellules vides et place les pions initiaux au centre.
+     */
     public Board() {
         grid = new Cell[SIZE][SIZE];
         initializeBoard();
     }
-     // Initialisation du plateau
+
+    /**
+     * Initialise le plateau avec des cellules vides et place les pions de départ.
+     * Les pions noirs ('N') et blancs ('B') sont placés au centre du plateau.
+     */
     private void initializeBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -37,7 +42,11 @@ public class Board {
         grid[3][4].setState('N');
         grid[4][3].setState('N');
     }
-     // Affichage du plateau
+
+    /**
+     * Affiche l'état actuel du plateau de jeu.
+     * Affiche les colonnes (a-h) et les lignes (1-8).
+     */
     public void display() {
         System.out.println("  a b c d e f g h"); // En-tête des colonnes
         for (int i = 0; i < SIZE; i++) {
@@ -48,13 +57,28 @@ public class Board {
             System.out.println();
         }
     }
-    
-     // Vérifie si une cellule est dans les limites du plateau
+
+    /**
+     * Vérifie si une cellule est dans les limites du plateau.
+     *
+     * @param x La position X de la cellule.
+     * @param y La position Y de la cellule.
+     * @return true si la cellule est dans les limites du plateau, false sinon.
+     */
     private boolean isInBounds(int x, int y) {
         return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
     }
-    
-    // Vérifie si une direction donnée peut capturer des pions
+
+    /**
+     * Vérifie si une direction donnée peut capturer des pions adverses.
+     *
+     * @param x La position X de la cellule de départ.
+     * @param y La position Y de la cellule de départ.
+     * @param dx La direction horizontale.
+     * @param dy La direction verticale.
+     * @param state L'état du joueur (Noir ou Blanc).
+     * @return true si une ligne de pions adverses peut être capturée, false sinon.
+     */
     private boolean hasCapturableLine(int x, int y, int dx, int dy, char state) {
         char opponent = (state == 'N') ? 'B' : 'N';
         int i = x + dx, j = y + dy;
@@ -68,10 +92,15 @@ public class Board {
 
         return hasOpponentBetween && isInBounds(i, j) && grid[i][j].getState() == state;
     }
-    
-    
 
-    // Vérifie s'il est possible de capturer des pions
+    /**
+     * Vérifie s'il est possible de capturer des pions dans toutes les directions possibles.
+     *
+     * @param x La position X de la cellule de départ.
+     * @param y La position Y de la cellule de départ.
+     * @param state L'état du joueur (Noir ou Blanc).
+     * @return true si au moins un pion peut être capturé, false sinon.
+     */
     private boolean canCapture(int x, int y, char state) {
         // Directions possibles : horizontale, verticale et diagonale
         int[][] directions = {
@@ -88,7 +117,16 @@ public class Board {
 
         return false;
     }
-    // Retourne les pions dans une direction donnée
+
+    /**
+     * Retourne les pions dans une direction donnée et les capture.
+     *
+     * @param x La position X de la cellule de départ.
+     * @param y La position Y de la cellule de départ.
+     * @param dx La direction horizontale.
+     * @param dy La direction verticale.
+     * @param state L'état du joueur (Noir ou Blanc).
+     */
     private void flipLine(int x, int y, int dx, int dy, char state) {
         char opponent = (state == 'N') ? 'B' : 'N';
         int i = x + dx, j = y + dy;
@@ -100,8 +138,13 @@ public class Board {
         }
     }
 
-    
-     // Capture les pions dans toutes les directions valides
+    /**
+     * Capture les pions dans toutes les directions valides.
+     *
+     * @param x La position X de la cellule de départ.
+     * @param y La position Y de la cellule de départ.
+     * @param state L'état du joueur (Noir ou Blanc).
+     */
     private void capturePions(int x, int y, char state) {
         int[][] directions = {
             {-1, 0}, {1, 0}, {0, -1}, {0, 1},
@@ -115,8 +158,16 @@ public class Board {
             }
         }
     }
-    
-        // Vérifie si un mouvement est valide
+
+    /**
+     * Vérifie si un mouvement est valide.
+     * Un mouvement est valide si la cellule est vide et si au moins un pion peut être capturé.
+     *
+     * @param x La position X de la cellule où le pion doit être placé.
+     * @param y La position Y de la cellule où le pion doit être placé.
+     * @param state L'état du joueur (Noir ou Blanc).
+     * @return true si le mouvement est valide, false sinon.
+     */
     public boolean isValidMove(int x, int y, char state) {
         if (!isInBounds(x, y) || (grid[x][y]).getState() != ' ') {
             return false;
@@ -126,7 +177,14 @@ public class Board {
         return canCapture(x, y, state);
     }
 
-    // Place un pion et retourne les pions capturés
+    /**
+     * Place un pion à la position (x, y) et capture les pions adverses si possible.
+     *
+     * @param x La position X de la cellule où le pion doit être placé.
+     * @param y La position Y de la cellule où le pion doit être placé.
+     * @param state L'état du joueur (Noir ou Blanc).
+     * @throws IllegalArgumentException si le mouvement est invalide.
+     */
     public void makeMove(int x, int y, char state) {
         if (!isValidMove(x, y, state)) {
             throw new IllegalArgumentException("Mouvement invalide !");
@@ -135,12 +193,19 @@ public class Board {
         grid[x][y].setState(state);
         capturePions(x, y, state);
     }
-    public int countPieces(char state){
-        int c =0;
+
+    /**
+     * Compte le nombre de pions d'un joueur sur le plateau.
+     *
+     * @param state L'état du joueur (Noir ou Blanc).
+     * @return Le nombre de pions du joueur sur le plateau.
+     */
+    public int countPieces(char state) {
+        int c = 0;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (grid[i][j].getState() == state){
-                    c+=1;
+                if (grid[i][j].getState() == state) {
+                    c += 1;
                 }
             }
         }

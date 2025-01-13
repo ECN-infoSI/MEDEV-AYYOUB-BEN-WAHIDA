@@ -1,17 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
 package fr.centrale.medev.tp.note;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests unitaires pour la classe Board.
+ * Classe de tests unitaires pour la classe Board.
+ * Ces tests vérifient le bon fonctionnement des fonctionnalités de la classe Board,
+ * telles que l'affichage du plateau, la validité des mouvements, la capture des pions, etc.
+ * 
+ * @author Nadhem
  */
 public class BoardTest {
 
+    /**
+     * Test de l'affichage du plateau de jeu.
+     * Vérifie que l'affichage ne lève pas d'exception.
+     */
     @Test
     public void testDisplay() {
         System.out.println("Test de l'affichage du plateau");
@@ -21,6 +25,10 @@ public class BoardTest {
         assertDoesNotThrow(() -> instance.display(), "L'affichage a levé une exception.");
     }
 
+    /**
+     * Test d'un mouvement valide.
+     * Vérifie qu'un coup est valide lorsqu'il peut capturer des pions.
+     */
     @Test
     public void testIsValidMove_Valid() {
         System.out.println("Test d'un mouvement valide");
@@ -34,6 +42,10 @@ public class BoardTest {
         assertTrue(result, "Le mouvement devrait être valide pour Noir.");
     }
 
+    /**
+     * Test d'un mouvement invalide.
+     * Vérifie qu'un coup est invalide lorsqu'il essaie de jouer sur une case déjà occupée.
+     */
     @Test
     public void testIsValidMove_Invalid() {
         System.out.println("Test d'un mouvement invalide");
@@ -47,6 +59,10 @@ public class BoardTest {
         assertFalse(result, "Le mouvement devrait être invalide pour une case déjà occupée.");
     }
 
+    /**
+     * Test du placement d'un pion valide.
+     * Vérifie qu'un placement valide de pion ne lève pas d'exception.
+     */
     @Test
     public void testMakeMove_Valid() {
         System.out.println("Test d'un placement de pion valide");
@@ -58,6 +74,10 @@ public class BoardTest {
         assertDoesNotThrow(() -> instance.makeMove(x, y, state), "Le placement du pion valide a échoué.");
     }
 
+    /**
+     * Test du placement d'un pion invalide.
+     * Vérifie qu'un placement invalide de pion lève une exception.
+     */
     @Test
     public void testMakeMove_Invalid() {
         System.out.println("Test d'un placement de pion invalide");
@@ -71,6 +91,10 @@ public class BoardTest {
                 "Un mouvement invalide aurait dû lever une exception.");
     }
 
+    /**
+     * Test de la capture de pions.
+     * Vérifie que la capture de pions se fait correctement après un coup valide.
+     */
     @Test
     public void testCapturePions() {
         System.out.println("Test de la capture de pions");
@@ -85,6 +109,10 @@ public class BoardTest {
         assertEquals('N', instance.grid[3][3].getState(), "Le pion Blanc aurait dû être capturé par Noir.");
     }
 
+    /**
+     * Test de l'état initial du plateau.
+     * Vérifie que les pions sont correctement placés au centre du plateau au début du jeu.
+     */
     @Test
     public void testInitialSetup() {
         System.out.println("Test de l'état initial du plateau");
