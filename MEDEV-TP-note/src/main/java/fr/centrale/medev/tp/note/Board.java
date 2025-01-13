@@ -48,4 +48,72 @@ public class Board {
             System.out.println();
         }
     }
+    
+     // Vérifie si une cellule est dans les limites du plateau
+    private boolean isInBounds(int x, int y) {
+        return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
+    }
+    
+    // Vérifie si une direction donnée peut capturer des pions
+    private boolean hasCapturableLine(int x, int y, int dx, int dy, char state) {
+        char opponent = (state == 'N') ? 'B' : 'N';
+        int i = x + dx, j = y + dy;
+        boolean hasOpponentBetween = false;
+
+        while (isInBounds(i, j) && grid[i][j].getState() == opponent) {
+            hasOpponentBetween = true;
+            i += dx;
+            j += dy;
+        }
+
+        return hasOpponentBetween && isInBounds(i, j) && grid[i][j].getState() == state;
+    }
+    
+    
+
+    // Vérifie s'il est possible de capturer des pions
+    private boolean canCapture(int x, int y, char state) {
+        // Directions possibles : horizontale, verticale et diagonale
+        int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Verticale et horizontale
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonale
+        };
+
+        for (int[] dir : directions) {
+            int dx = dir[0], dy = dir[1];
+            if (hasCapturableLine(x, y, dx, dy, state)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    // Retourne les pions dans une direction donnée
+    private void flipLine(int x, int y, int dx, int dy, char state) {
+        char opponent = (state == 'N') ? 'B' : 'N';
+        int i = x + dx, j = y + dy;
+
+        while (isInBounds(i, j) && grid[i][j].getState() == opponent) {
+            grid[i][j].setState(state); // Retourne le pion
+            i += dx;
+            j += dy;
+        }
+    }
+
+    
+     // Capture les pions dans toutes les directions valides
+    private void capturePions(int x, int y, char state) {
+        int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1}
+        };
+
+        for (int[] dir : directions) {
+            int dx = dir[0], dy = dir[1];
+            if (hasCapturableLine(x, y, dx, dy, state)) {
+                flipLine(x, y, dx, dy, state);
+            }
+        }
+    }
+    
 }
