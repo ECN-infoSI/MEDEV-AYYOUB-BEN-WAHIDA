@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private final Cell[][] grid;
+    final Cell[][] grid;
 
     // Dimensions du plateau
     private static final int SIZE = 8;
