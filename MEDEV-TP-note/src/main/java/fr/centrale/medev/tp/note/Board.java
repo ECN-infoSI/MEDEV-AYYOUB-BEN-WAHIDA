@@ -116,4 +116,24 @@ public class Board {
         }
     }
     
+        // Vérifie si un mouvement est valide
+    public boolean isValidMove(int x, int y, char state) {
+        if (!isInBounds(x, y) || (grid[x][y]).getState() != ' ') {
+            return false;
+        }
+
+        // Vérifie s'il y a au moins un pion à capturer
+        return canCapture(x, y, state);
+    }
+
+    // Place un pion et retourne les pions capturés
+    public void makeMove(int x, int y, char state) {
+        if (!isValidMove(x, y, state)) {
+            throw new IllegalArgumentException("Mouvement invalide !");
+        }
+
+        grid[x][y].setState(state);
+        capturePions(x, y, state);
+    }
+    
 }
